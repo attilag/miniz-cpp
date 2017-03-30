@@ -100,14 +100,16 @@ if(MINGW OR CYGWIN)
   add_definitions(-O3)
 endif()
 
-set (MinizCpp_INCLUDES miniz.h zip_file.hpp)
+set (MinizCpp_INCLUDES miniz.h zip_file.hpp gzip.hpp)
 set_source_files_properties(${MinizCpp_INCLUDES} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LINKER_FLAGS}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${LINKER_FLAGS}")
 set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${LINKER_FLAGS}")
 
-add_library(minizcpp miniz.c zip_file.cpp)
+add_library(minizcpp STATIC miniz.c zip_file.cpp gzip.cpp)
+target_link_libraries(minizcpp ${LIBS})
+
 set(MINIZCPP_LIBS minizcpp)
 
 add_executable(pipe pipe.cpp ${MinizCpp_INCLUDES})
