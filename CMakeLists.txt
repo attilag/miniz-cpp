@@ -68,7 +68,7 @@ if(MSVC)
   # how to workaround or fix the error. So I'm disabling it globally.
   add_definitions(/wd4503)
 else()
-  add_definitions(-Wall -Wextra -Wconversion -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wcast-qual -Wunused -Woverloaded-virtual  -pedantic ${CPP11_FLAG})
+  add_definitions(-Wall -Wextra -Wconversion -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wcast-qual -Wunused -Woverloaded-virtual -pedantic ${CPP11_FLAG})
 
   if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     add_definitions(-Weverything -Wno-c++98-compat-pedantic  -Wno-c++98-compat -Wno-documentation -Wno-switch-enum -Wno-weak-vtables -Wno-missing-prototypes -Wno-padded -Wno-missing-noreturn -Wno-exit-time-destructors -Wno-documentation-unknown-command)
@@ -107,8 +107,13 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LINKER_FLAGS}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${LINKER_FLAGS}")
 set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${LINKER_FLAGS}")
 
-add_library(minizcpp STATIC miniz.c zip_file.cpp gzip.cpp)
+add_library(minizcpp STATIC zip_file.cpp gzip.cpp miniz.c)
 target_link_libraries(minizcpp ${LIBS})
+set_target_properties(minizcpp PROPERTIES
+  VERSION ${MINIZCPP_VERSION}
+  SOVERSION ${CPACK_PACKAGE_VERSION_MAJOR}
+)
+set_property(TARGET minizcpp PROPERTY CXX_STANDARD 14)
 
 set(MINIZCPP_LIBS minizcpp)
 
