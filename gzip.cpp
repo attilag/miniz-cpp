@@ -42,7 +42,6 @@ namespace miniz {
         skip++;
       }
       skip++;
-      std::cout << "\n";
     }
     if (input_buffer[3] & 0x10) {
       while(input_buffer[skip] != '\0') {
